@@ -14,8 +14,8 @@ const success = function(res, data){
 
 const error = function(res, err){
 	const result = {
-		code: err.code || ERRORS.DEFAULT_ERROR.CODE,
-		msg : err.msg  || ERRORS.DEFAULT_ERROR.MSG,
+		code: err.code || err.CODE || ERRORS.DEFAULT_ERROR.CODE,
+		msg : err.msg  || err.MSG  || ERRORS.DEFAULT_ERROR.MSG,
 		data: {}
 	};
 	res.send(result);

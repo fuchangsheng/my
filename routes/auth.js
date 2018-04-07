@@ -12,6 +12,12 @@ apis.push({
 	handler:service.token
 });
 
+apis.push({
+	type: 'get',
+	path: '/user/create',
+	handler:service.createUser
+});
+
 
 class Router extends BaseRouter {
 

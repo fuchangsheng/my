@@ -6,7 +6,11 @@ const model = new BaseModel();
 
 const _Schema = new model.Schema({
     nickname : String,
-    password : String
+    avtar    : String,
+    password : String,
+    mobile   : String,
+    create_time: String,
+    update_time: String
 });
 
 
