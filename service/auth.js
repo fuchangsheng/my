@@ -9,13 +9,47 @@ const redis = require('../libs/redis.js');
 const mongodb = require('../libs/mongo.js');
 const jwtsecret = CONFIG.AUTH.JWT_SECRET;
 const utils = require('../libs/utils.js')
+const moment = require('moment');
 
 const User = require('../models/user.js');
 
 const service = new BaseService();
 
+
+//get token by nickname && password
 service.token = function(req, res){
 
+    let err = ERRORS.NORMAL_RETURN;
+
+    const nickname = req.body.nickname;
+    const password = req.body.password;
+
+    if((!nickname) || (!password)){
+        err = ERRORS.PARAM_INVALID;
+        return service.error(res, err);
+    } 
+
+    User.schema.findOne({nickname:nickname,password:password}).execAsync()
+    .then((u)=>{
+        if(!u){
+            throw ERRORS.NAME_PWD_NOT_MATCH;
+        }
+        const now = moment().format('YYYY-MM-DD HH:mm:ss');
+        const payload = {
+            nickname : u.nickname,
+            user_id  : u._id.toString(),
+            createAT : now
+        }
+
+        const token = jwt.encode(payload, jwtsecret);
+        redis.setAsync(`${CONFIG.AUTH.JWT_REDIS_PREFIX}${payload.user_id}`, token, 'EX',CONFIG.AUTH.JWT_EXPIRE_SECONDS);
+        return service.success(res, {token:token});
+    })
+    .catch((err)=>{
+        console.error(err);
+        err = (err.CODE && err.MSG) ? err : ERRORS.DATA_PROCESS_FAIL;
+        return service.error(res, err);
+    });
 };
 
 
@@ -24,12 +58,16 @@ service.createUser = function(req, res){
 
     let err = ERRORS.NORMAL_RETURN;
 
-    const nickname = req.body.nickname || '付昌盛';
-    const password = req.body.password || '52902**Fcs';
-    const mobile   = req.body.mobile || '15527941667';
-    const avtar    = req.body.avtar || 'default';
+    const nickname = req.body.nickname;
+    const password = req.body.password;
+    const mobile   = req.body.mobile;
+    const avtar    = req.body.avtar;
+    const birth = req.body.birth;
+    const province = req.body.province;
+    const city = req.body.city;
+    const profession = req.body.profession;
     
-    if((!nickname) || (!password) ||(!utils.isMobile(mobile)) || (!avtar)){
+    if((!nickname) || (!password)){
     	err = ERRORS.PARAM_INVALID;
     	return service.error(res, err);
     } 
@@ -37,13 +75,18 @@ service.createUser = function(req, res){
     User.schema.findOne({$or:[{nickname:nickname},{mobile:mobile}]}).execAsync()
     .then((u)=>{
     	if(u){
-    		throw err = ERRORS.DATA_DUPLICATED;
+    		throw ERRORS.DATA_DUPLICATED;
     	}
 	    const user = new User.schema({
 	   		nickname : nickname,
 	   		password : password,
 	   		mobile   : mobile,
-	   		avtar    : avtar
+	   		avatar    : avatar,
+            birth    : birth,
+            province : province,
+            city     : city,
+            profession:profession,
+            type     : CONSTANTS.USER_TYPE.DEFAULT_USER.VALUE
     	});
 	    return user.saveAsync();
     })
@@ -54,9 +97,10 @@ service.createUser = function(req, res){
     		throw ERRORS.MONGODB_SAVE_FAIL;
     	}
     })
-    .catch((e)=>{
-    	console.error(e);
-    	return service.error(res, e);
+    .catch((err)=>{
+        console.error(err);
+        err = (err.CODE && err.MSG) ? err : ERRORS.DATA_PROCESS_FAIL;
+        return service.error(res, err);
     });
 
 }

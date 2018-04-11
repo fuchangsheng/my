@@ -10,10 +10,9 @@ const defaultHandler = function(req, res){
 
 class BaseRouter {
 
-    constructor(app, modulename){
+    constructor(app){
     	this.app = app;
     	this.router = express.Router();
-    	this.modulename = modulename;
     	this.apis = [];
     }
 
@@ -30,7 +29,7 @@ class BaseRouter {
  				self.router.post(path, handler);
  			} 
  		});
- 		self.app.use(`/${self.modulename}`, self.router);
+ 		self.app.use('/', self.router);
  	}
 
 }

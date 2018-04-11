@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Editor.md</title>
+
+	<link rel="stylesheet" href="/libs/editor/css/editormd.min.css"></style>
+	<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script type="text/javascript" src="/libs/editor/editormd.min.js"></script>
+</head>
+<body>
+	<div class="editormd" id="my-editor">
+	  <textarea class="editormd-markdown-textarea" name="test-editormd-markdown-doc"></textarea>
+	  <textarea class="editormd-html-textarea" name="text"></textarea>
+	</div>
+	<script type="text/javascript">
+		const options = {
+			width   : "90%",
+            height  : 800,
+            syncScrolling : "single",
+			path:'/libs/editor/lib/',
+			saveHTMLToTextarea : true,
+			imageUpload : true,
+			imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+			imageUploadURL : "/upload/mdpic",
+			previewTheme : "dark"
+
+		}
+	    editormd("my-editor",options);
+	</script>
+</body>
+</html>
