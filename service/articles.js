@@ -176,7 +176,7 @@ service.articles = function(req, res){
     const start_time = req.body.start_time;
     const end_time = req.body.end_time;
 
-    
+
 
 }
 
@@ -322,7 +322,7 @@ service.listCategory = function(req, res){
     Categories.schema.find({user_id: utils.str2ObjectId(user_id)}).select('name').execAsync()
     .then((categories)=>{
         let cs = categories.map((category)=>{
-            return {id:category._id.toString(),name;category.name};
+            return {id:category._id.toString(),name:category.name};
         });
         return service.success(res, {categories:cs});
     })
@@ -405,7 +405,7 @@ service.listTag = function(req, res){
     Tags.schema.find({user_id: utils.str2ObjectId(user_id)}).select('name').execAsync()
     .then((tags)=>{
         let ts = tags.map((tag)=>{
-            return {id:tag._id.toString(),name;tag.name};
+            return {id:tag._id.toString(),name:tag.name};
         });
         return service.success(res, {tags:ts});
     })
