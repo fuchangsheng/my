@@ -34,6 +34,8 @@ app.use(uploader);
 
 //AUTH MODULE
 new (require('./routes/auth.js'))(app).init();
+//ARTICLES MODULE
+new (require('./routes/articles.js'))(app).init();
 
 //404 Not Found
 app.use('/', function(req, res){res.send({code:-1,msg:'404 Not Found',data:{}})});

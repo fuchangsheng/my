@@ -3,4 +3,18 @@ module.exports = {
 		SUPER_USER:{NAME:'管理员',VALUE:0},
 		DEFAULT_USER:{NAME:'普通用户',VALUE:1}
 	},
+	ARTICLE_WRITE_TYPE:{
+		SELF:{NAME:'原创',VALUE:0},
+		OTHERS:{NAME:'转载',VALUE:1}
+	},
+	PUBLISH_TYPE:{
+		NORMAL:{NAME:'普通',VALUE:0},
+		DEVDOC:{NAME:'开发文档',VALUE:1},
+		NOTICE:{NAME:'公告',VALUE:2}
+	},
+	ARTICLE_DEL:{
+		NORMAL:{NAME:'正常',VALUE:0},
+		TRASH:{NAME:'垃圾箱',VALUE:1},
+		DELETE:{NAME:'删除',VALUE:2},
+	}
 };

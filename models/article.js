@@ -10,12 +10,14 @@ const _Schema = new model.Schema({
     title        : String,
     write_type   : Number,   //0-yuanchuang 1-zhuanzai
     publish_type : Number,   //0-normal 1-development_docs 2-notification
-    tags         : Object,   // Array of tags
-    author       : {type: model.mongoose.Types.ObjectId, ref:'user'},
+    ref          : String,
+    tags         : [{type: model.mongoose.Schema.Types.ObjectId, ref:'tag'}],   // Array of tags
+    author       : {type: model.mongoose.Schema.Types.ObjectId, ref:'user'},
     content      : String,
+    category     : {type: model.mongoose.Schema.Types.ObjectId, ref:'category'},// wenzhangfenlei
     read         : Number,
-    likes        : Object,
-    comments     : Object,
+    delete       : Number,
+    status       : Number, //0-caogao 1-publish
     create_time  : String,
     update_time  : String
 });
